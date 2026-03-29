@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Browser</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  min-height: 100vh;
+  color: white;
+}
+.header {
+  background: rgba(255,255,255,0.1);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(10px);
+}
+.logo { font-size: 1.3em; font-weight: bold; color: #00ff88; }
+.url-bar { flex:1; display:flex; gap:10px; }
+.url-input {
+  flex:1; padding:10px 15px;
+  border-radius:25px;
+  border:2px solid #00ff88;
+  background:rgba(255,255,255,0.1);
+  color:white; font-size:14px; outline:none;
+}
+.url-input::placeholder { color:rgba(255,255,255,0.5); }
+.go-btn {
+  padding:10px 25px;
+  background:#00ff88; color:#000;
+  border:none; border-radius:25px;
+  font-weight:bold; cursor:pointer;
+}
+.status-bar {
+  background:rgba(0,255,136,0.1);
+  padding:8px 20px;
+  display:flex; gap:20px;
+  font-size:12px;
+}
+.dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#00ff88; margin-right:5px; }
+.grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:15px;
+  padding:30px 20px;
+  max-width:600px;
+  margin:0 auto;
+}
+.site-card {
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(0,255,136,0.2);
+  border-radius:15px;
+  padding:20px 10px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-decoration:none;
+  color:white;
+  display:block;
+}
+.site-card:hover {
+  background:rgba(0,255,136,0.2);
+  transform:scale(1.05);
+  border-color:#00ff88;
+}
+.site-icon { font-size:2.5em; margin-bottom:8px; }
+.site-name { font-size:13px; font-weight:bold; }
+.search-box {
+  max-width:600px;
+  margin:0 auto;
+  padding:0 20px 20px;
+}
+.search-input {
+  width:100%;
+  padding:15px 20px;
+  border-radius:25px;
+  border:2px solid rgba(0,255,136,0.4);
+  background:rgba(255,255,255,0.1);
+  color:white;
+  font-size:16px;
+  outline:none;
+}
+.search-input::placeholder { color:rgba(255,255,255,0.5); }
+.search-title {
+  text-align:center;
+  padding:30px 20px 15px;
+  font-size:1.5em;
+  color:#00ff88;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🛡️ VPN Browser</div>
+  <div class="url-bar">
+    <input class="url-input" id="urlInput" type="text"
+      placeholder="URL লিখুন... যেমন: youtube.com"
+      onkeypress="if(event.key==='Enter') goToSite()"/>
+    <button class="go-btn" onclick="goToSite()">যাও</button>
+  </div>
+</div>
+
+<div class="status-bar">
+  <span><span class="dot"></span>VPN সক্রিয়</span>
+  <span><span class="dot"></span>এনক্রিপ্টেড</span>
+  <span><span class="dot"></span>সুরক্ষিত</span>
+</div>
+
+<div class="search-title">🌐 জনপ্রিয় সাইট</div>
+
+<div class="search-box">
+  <input class="search-input" type="text"
+    placeholder="🔍 Google এ সার্চ করুন..."
+    onkeypress="if(event.key==='Enter') googleSearch(this.value)"/>
+</div>
+
+<div class="grid">
+  <a class="site-card" href="https://www.youtube.com" target="_blank">
+    <div class="site-icon">▶️</div>
+    <div class="site-name">YouTube</div>
+  </a>
+  <a class="site-card" href="https://www.facebook.com" target="_blank">
+    <div class="site-icon">👥</div>
+    <div class="site-name">Facebook</div>
+  </a>
+  <a class="site-card" href="https://www.google.com" target="_blank">
+    <div class="site-icon">🔍</div>
+    <div class="site-name">Google</div>
+  </a>
+  <a class="site-card" href="https://www.instagram.com" target="_blank">
+    <div class="site-icon">📸</div>
+    <div class="site-name">Instagram</div>
+  </a>
+  <a class="site-card" href="https://www.twitter.com" target="_blank">
+    <div class="site-icon">🐦</div>
+    <div class="site-name">Twitter/X</div>
+  </a>
+  <a class="site-card" href="https://www.tiktok.com" target="_blank">
+    <div class="site-icon">🎵</div>
+    <div class="site-name">TikTok</div>
+  </a>
+  <a class="site-card" href="https://www.whatsapp.com" target="_blank">
+    <div class="site-icon">💬</div>
+    <div class="site-name">WhatsApp</div>
+  </a>
+  <a class="site-card" href="https://www.wikipedia.org" target="_blank">
+    <div class="site-icon">📖</div>
+    <div class="site-name">Wikipedia</div>
+  </a>
+  <a class="site-card" href="https://www.gmail.com" target="_blank">
+    <div class="site-icon">📧</div>
+    <div class="site-name">Gmail</div>
+  </a>
+</div>
+
+<script>
+function goToSite() {
+  let url = document.getElementById('urlInput').value.trim();
+  if (!url) return;
+  if (!url.startsWith('http')) url = 'https://' + url;
+  window.open(url, '_blank');
+}
+
+function googleSearch(query) {
+  if (!query) return;
+  window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
+}
+</script>
+
+</body>
+</html>
